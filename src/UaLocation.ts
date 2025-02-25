@@ -20,8 +20,9 @@ export namespace UaLocation {
     }
 
     static readonly findByIso = (iso: OblastIso): Oblast => {
-      const match: any = oblast[iso.replace('UA', '') as keyof typeof oblast]
-      return new Oblast(iso, match[0], match[1], match[2])
+      const shortIso = iso.replace('UA', '') as keyof typeof oblast
+      const match: any = oblast[shortIso]
+      return new Oblast(shortIso, match[0], match[1], match[2])
     }
 
     get iso() {
@@ -78,7 +79,7 @@ export namespace UaLocation {
       return 'UA' + this.shortIso
     }
 
-    get parent(): Oblast {
+    get oblast(): Oblast {
       const parentIso = this.shortIso.slice(0, 2)
       return Oblast.findByIso(parentIso as any)
     }
@@ -103,7 +104,7 @@ export namespace UaLocation {
     }
 
     static readonly findByIso: {
-      (iso: OblastIso): Hromada
+      (iso: HromadaIso): Hromada
       (iso: string): Hromada | undefined
     } = (iso) => {
       const match: any = hromada[iso.replace('UA', '') as keyof typeof hromada]
@@ -115,7 +116,7 @@ export namespace UaLocation {
       return res!
     }
 
-    get parent(): Raion {
+    get raion(): Raion {
       // UA6802019
       const parentIso = this.shortIso.slice(0, 4)
       return Raion.findByIso(parentIso as any)
@@ -194,7 +195,7 @@ export namespace UaLocation {
       return `${this.en}_${this.iso}_${this.ua}`
     }
 
-    get parent(): Hromada {
+    get hromada(): Hromada {
       // 1202001002
       const parentIso = this.shortIso.slice(0, 7)
       return Hromada.findByIso(parentIso as any)
