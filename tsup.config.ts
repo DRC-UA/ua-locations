@@ -6,6 +6,9 @@ export default defineConfig({
   },
   format: ['esm', 'cjs'],
   dts: true,
+  esbuildOptions(options) {
+    options.charset = 'utf8'
+  },
   splitting: true,
   sourcemap: true,
   clean: true,
