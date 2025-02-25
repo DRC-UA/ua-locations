@@ -30,7 +30,7 @@ export namespace UaLocation {
     }
 
     get _5w() {
-      return this.en + '_' + this.ua
+      return `${this.en}_${this.ua}`
     }
 
     get raions(): Raion[] {
@@ -64,19 +64,24 @@ export namespace UaLocation {
       (iso: RaionIso): Raion
       (iso: string): Raion | undefined
     } = (iso) => {
-      const match: any = raion[iso.replace('UA', '') as keyof typeof raion]
-      return new Raion(iso, match[0], match[1], match[2])
+      const shortIso = iso.replace('UA', '') as keyof typeof raion
+      const match: any = raion[shortIso]
+      return new Raion(shortIso, match[0], match[1], match[2])
     }
 
     get hromadas(): Hromada[] {
       const matches = Object.entries(hromada).filter(([iso, data]) => iso.startsWith(this.shortIso))
-      return matches.map(([iso, data]: any) => {
-        return new Hromada(iso, data[0], data[1], data[2])
+      return matches.map(([shortIso, data]: any) => {
+        return new Hromada(shortIso, data[0], data[1], data[2])
       })
     }
 
     get iso() {
       return 'UA' + this.shortIso
+    }
+
+    get _5w() {
+      return `${this.en}_${this.ua}`
     }
 
     get oblast(): Oblast {
@@ -107,8 +112,9 @@ export namespace UaLocation {
       (iso: HromadaIso): Hromada
       (iso: string): Hromada | undefined
     } = (iso) => {
-      const match: any = hromada[iso.replace('UA', '') as keyof typeof hromada]
-      return new Hromada(iso, match[0], match[1], match[2])
+      const shortIso = iso.replace('UA', '') as keyof typeof hromada
+      const match: any = hromada[shortIso]
+      return new Hromada(shortIso, match[0], match[1], match[2])
     }
 
     readonly getSettlements = async (): Promise<Settlement[]> => {
