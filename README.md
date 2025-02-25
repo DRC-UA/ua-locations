@@ -24,7 +24,7 @@ npm install ua-location
 import {UaLocation} from 'ua-location'
 
 // Get all Hromadas of a given Oblast
-const hromadas = UaLocation.Oblast.findByIso('UA05').raions.flatMap(_ => _.hromadas)
+const hromadas = UaLocation.Oblast.findByName('Chernihivska').raions.flatMap(_ => _.hromadas)
 
 // Search for a Settlement
 const settlement = await UaLocation.Oblast.findByName('Dnipropetrovska')
