@@ -36,7 +36,6 @@ describe('UaLocation', () => {
 
   it('should find hromada by name', () => {
     const match = UaLocation.Hromada.findByName('Dnipro')
-    UaLocation.Hromada.findByIso('UA0102003').en
     expect(match?.iso).toEqual('UA1202')
   })
 

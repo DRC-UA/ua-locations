@@ -23,6 +23,15 @@ npm install ua-location
 ```ts
 import {UaLocation} from 'ua-location'
 
+// Get Raion's information
+const raion = UaLocation.Raion.findByIso('UA0102')
+raion.en        // Bakhchysaraiskyi
+raion.ua        // Бахчисарайський
+raion.hromadas  // UaLocation.Hromada[]
+raion._5w       // Bakhchysaraiskyi_Бахчисарайський
+raion.loc       // [ 44.65944872, 33.83442735 ]
+raion.oblast    // UaLocation.Oblast (Autonomous Republic of Crimea)
+
 // Get all Hromadas of a given Oblast
 const hromadas = UaLocation.Oblast.findByName('Chernihivska').raions.flatMap(_ => _.hromadas)
 
@@ -30,10 +39,10 @@ const hromadas = UaLocation.Oblast.findByName('Chernihivska').raions.flatMap(_ =
 const settlement = await UaLocation.Oblast.findByName('Dnipropetrovska')
   .raions.find(_ => _.en.includes('Cherni'))
   ?.hromadas.find(_ => _.en.includes('Cherni'))
-  ?.getSettlements().then(_ => _[0])
+  ?.getSettlements().then(_ => _.find(_ => _.en.includes('Cherni'))?.en) // Chernihiv
 
 // Get Oblast ISO of a Settlement reference
-const oblastIso = settlement.hromada.raion.oblast.iso
+const oblast = settlement.hromada.raion.oblast.iso
 
 // Get Hromada's name by ISO
 const hromada = UaLocation.Hromada.findByIso('UA0102003').en // Aromatnenska
