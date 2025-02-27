@@ -1,3 +1,4 @@
+import {OblastIso} from './generated/oblast'
 import {UaLocation} from './UaLocation'
 
 describe('UaLocation', () => {
@@ -24,7 +25,7 @@ describe('UaLocation', () => {
     expect(raion.ua).toEqual('Бахчисарайський')
     expect(raion.hromadas).not.toBeNull()
     expect(raion._5w).toEqual('Bakhchysaraiskyi_Бахчисарайський')
-    expect(raion.loc).toEqual([ 44.65944872, 33.83442735 ])
+    expect(raion.loc).toEqual([44.65944872, 33.83442735])
     expect(raion.oblast).not.toBeNull()
 
   })

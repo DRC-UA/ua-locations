@@ -1,7 +1,6 @@
 import {oblast, OblastIso, OblastName} from './generated/oblast'
 import {raion, RaionIso} from './generated/raion'
 import {hromada, HromadaIso} from './generated/hromada'
-import {Obj} from '@axanc/ts-utils'
 
 export namespace UaLocation {
 
@@ -14,15 +13,28 @@ export namespace UaLocation {
     ) {
     }
 
-    static readonly findByName = (name: OblastName): Oblast => {
-      const [iso, match]: any = Object.entries(oblast).find(([iso, data]) => data[0] === name)!
-      return new Oblast(iso, match[0], match[1], match[2])
+    static readonly data: Map<OblastIso, Oblast> = (() => {
+      const res = new Map<OblastIso, Oblast>()
+      Object.entries(oblast).forEach(([iso, data]) => {
+        res.set(iso as OblastIso, new Oblast(iso as OblastIso, data[0], data[1], data[2]))
+      })
+      return res
+    })()
 
+    static readonly getAll = () => this.data
+
+    static readonly findByName: {
+      (name: OblastName): Oblast
+      (name: string): Oblast | undefined
+    } = (name) => {
+      return Array.from(this.data.values()).find(_ => _.en === name) as any
     }
 
-    static readonly findByIso = (iso: OblastIso): Oblast => {
-      const match: any = oblast[iso as keyof typeof oblast]
-      return new Oblast(iso, match[0], match[1], match[2])
+    static readonly findByIso: {
+      (iso: OblastIso): Oblast
+      (iso: string): Oblast | undefined
+    } = (iso) => {
+      return this.data.get(iso as OblastIso) as any
     }
 
     get _5w() {
@@ -47,21 +59,25 @@ export namespace UaLocation {
     ) {
     }
 
+    static readonly data: Map<RaionIso, Raion> = (() => {
+      const res = new Map<RaionIso, Raion>()
+      Object.entries(raion).forEach(([iso, data]) => {
+        res.set(iso as RaionIso, new Raion(iso as RaionIso, data[0], data[1], data[2]))
+      })
+      return res
+    })()
+
+    static readonly getAll = () => this.data
 
     static readonly findByName = (name: string): Raion | undefined => {
-      const match = Object.entries(raion).find(([iso, data]) => data[0] === name)
-      if (match) {
-        const [iso, data]: any = match
-        return new Raion(iso, data[0], data[1], data[2])
-      }
+      return Array.from(this.data.values()).find(_ => _.en === name)
     }
 
     static readonly findByIso: {
       (iso: RaionIso): Raion
       (iso: string): Raion | undefined
     } = (iso) => {
-      const match: any = raion[iso as keyof typeof raion]
-      return new Raion(iso, match[0], match[1], match[2])
+      return this.data.get(iso as RaionIso) as any
     }
 
     get hromadas(): Hromada[] {
@@ -84,27 +100,32 @@ export namespace UaLocation {
   export class Hromada {
 
     constructor(
-      public iso: string,
+      public iso: HromadaIso,
       public en: string,
       public ua: string,
       public loc: [number, number],
     ) {
     }
 
+    static readonly data: Map<HromadaIso, Hromada> = (() => {
+      const res = new Map<HromadaIso, Hromada>()
+      Object.entries(hromada).forEach(([iso, data]) => {
+        res.set(iso as HromadaIso, new Hromada(iso as HromadaIso, data[0], data[1], data[2]))
+      })
+      return res
+    })()
+
+    static readonly getAll = () => this.data
+
     static readonly findByName = (name: string): Hromada | undefined => {
-      const match = Object.entries(hromada).find(([iso, data]) => data[0] === name)
-      if (match) {
-        const [iso, data]: any = match
-        return new Hromada(iso, data[0], data[1], data[2])
-      }
+      return Array.from(this.data.values()).find(_ => _.en === name)
     }
 
     static readonly findByIso: {
       (iso: HromadaIso): Hromada
       (iso: string): Hromada | undefined
     } = (iso) => {
-      const match: any = hromada[iso as keyof typeof hromada]
-      return new Hromada(iso, match[0], match[1], match[2])
+      return this.data.get(iso as HromadaIso) as any
     }
 
     readonly getSettlements = async (): Promise<Settlement[]> => {

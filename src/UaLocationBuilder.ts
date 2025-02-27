@@ -109,10 +109,11 @@ export class UaLocationBuilder {
     }
     Obj.keys(transformed).forEach(level => {
       const hasType = Object.hasOwn(isosType, level)
+      const type = `${capitalize(level)}Iso`
       fs.writeFileSync(`${this.args.outDir}/${level}.ts`, [
         level === 'oblast' ? `export type OblastName = ${data.oblast.map(_ => `'${_['Oblast']}'`).join('|')}` : undefined,
-        hasType ? `export type ${capitalize(level)}Iso = ${(isosType as any)[level]}` : undefined,
-        `export const ${level}${hasType ? '' : ':Record<string, any>'} = ${JSON.stringify(transformed[level]).replace(/"([^"]+)":/g, '$1:')}` + (hasType ? ' as const' : ''),
+        hasType ? `export type ${type} = ${(isosType as any)[level]}` : undefined,
+        `export const ${level}${hasType ? `:Record<${type}, [string,string,[number,number]]>` : ':Record<string, any>'} = ${JSON.stringify(transformed[level]).replace(/"([^"]+)":/g, '$1:')}` + (hasType ? ' as const' : ''),
       ].filter(_ => !!_).join('\n'))
     })
   }
