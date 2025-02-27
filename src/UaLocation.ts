@@ -1,12 +1,13 @@
 import {oblast, OblastIso, OblastName} from './generated/oblast'
 import {raion, RaionIso} from './generated/raion'
 import {hromada, HromadaIso} from './generated/hromada'
+import {Obj} from '@axanc/ts-utils'
 
 export namespace UaLocation {
 
   export class Oblast {
     constructor(
-      private shortIso: string,
+      public iso: string,
       public en: string,
       public ua: string,
       public loc: [number, number],
@@ -20,13 +21,8 @@ export namespace UaLocation {
     }
 
     static readonly findByIso = (iso: OblastIso): Oblast => {
-      const shortIso = iso.replace('UA', '') as keyof typeof oblast
-      const match: any = oblast[shortIso]
-      return new Oblast(shortIso, match[0], match[1], match[2])
-    }
-
-    get iso() {
-      return 'UA' + this.shortIso
+      const match: any = oblast[iso as keyof typeof oblast]
+      return new Oblast(iso, match[0], match[1], match[2])
     }
 
     get _5w() {
@@ -34,7 +30,7 @@ export namespace UaLocation {
     }
 
     get raions(): Raion[] {
-      const matches = Object.entries(raion).filter(([iso]) => iso.startsWith(this.shortIso))
+      const matches = Object.entries(raion).filter(([iso]) => iso.startsWith(this.iso))
       return matches.map(([iso, data]: any) => {
         return new Raion(iso, data[0], data[1], data[2])
       })
@@ -44,7 +40,7 @@ export namespace UaLocation {
   export class Raion {
 
     constructor(
-      private shortIso: string,
+      public iso: string,
       public en: string,
       public ua: string,
       public loc: [number, number],
@@ -53,7 +49,7 @@ export namespace UaLocation {
 
 
     static readonly findByName = (name: string): Raion | undefined => {
-      const match = Object.entries(raion).find(([iso, data]) => data[0].includes(name))
+      const match = Object.entries(raion).find(([iso, data]) => data[0] === name)
       if (match) {
         const [iso, data]: any = match
         return new Raion(iso, data[0], data[1], data[2])
@@ -64,20 +60,15 @@ export namespace UaLocation {
       (iso: RaionIso): Raion
       (iso: string): Raion | undefined
     } = (iso) => {
-      const shortIso = iso.replace('UA', '') as keyof typeof raion
-      const match: any = raion[shortIso]
-      return new Raion(shortIso, match[0], match[1], match[2])
+      const match: any = raion[iso as keyof typeof raion]
+      return new Raion(iso, match[0], match[1], match[2])
     }
 
     get hromadas(): Hromada[] {
-      const matches = Object.entries(hromada).filter(([iso, data]) => iso.startsWith(this.shortIso))
+      const matches = Object.entries(hromada).filter(([iso, data]) => iso.startsWith(this.iso))
       return matches.map(([shortIso, data]: any) => {
         return new Hromada(shortIso, data[0], data[1], data[2])
       })
-    }
-
-    get iso() {
-      return 'UA' + this.shortIso
     }
 
     get _5w() {
@@ -85,7 +76,7 @@ export namespace UaLocation {
     }
 
     get oblast(): Oblast {
-      const parentIso = this.shortIso.slice(0, 2)
+      const parentIso = this.iso.slice(0, 4)
       return Oblast.findByIso(parentIso as any)
     }
   }
@@ -93,7 +84,7 @@ export namespace UaLocation {
   export class Hromada {
 
     constructor(
-      private shortIso: string,
+      public iso: string,
       public en: string,
       public ua: string,
       public loc: [number, number],
@@ -101,7 +92,7 @@ export namespace UaLocation {
     }
 
     static readonly findByName = (name: string): Hromada | undefined => {
-      const match = Object.entries(raion).find(([iso, data]) => data[0].includes(name))
+      const match = Object.entries(hromada).find(([iso, data]) => data[0] === name)
       if (match) {
         const [iso, data]: any = match
         return new Hromada(iso, data[0], data[1], data[2])
@@ -112,9 +103,8 @@ export namespace UaLocation {
       (iso: HromadaIso): Hromada
       (iso: string): Hromada | undefined
     } = (iso) => {
-      const shortIso = iso.replace('UA', '') as keyof typeof hromada
-      const match: any = hromada[shortIso]
-      return new Hromada(shortIso, match[0], match[1], match[2])
+      const match: any = hromada[iso as keyof typeof hromada]
+      return new Hromada(iso, match[0], match[1], match[2])
     }
 
     readonly getSettlements = async (): Promise<Settlement[]> => {
@@ -124,12 +114,8 @@ export namespace UaLocation {
 
     get raion(): Raion {
       // UA6802019
-      const parentIso = this.shortIso.slice(0, 4)
+      const parentIso = this.iso.slice(0, 6)
       return Raion.findByIso(parentIso as any)
-    }
-
-    get iso() {
-      return 'UA' + this.shortIso
     }
 
     get _5w() {
@@ -137,31 +123,38 @@ export namespace UaLocation {
     }
   }
 
+  type SettlementData = {
+    en: string,
+    ua: string,
+    loc: [number, number],
+  }
+
   export class Settlement {
 
     constructor(
-      private shortIso: string,
+      public iso: string,
       public en: string,
       public ua: string,
       public loc: [number, number],
     ) {
     }
 
-    private static settlements?: Record<string, any>
-    private static settlements$?: Promise<Record<string, any>>
+    private static settlements?: Map<string, Settlement>
+    private static settlements$?: Promise<Map<string, Settlement>>
     private static parentToChild: Map<string, string[]> = new Map()
 
     static readonly getAll = async () => {
       if (this.settlements) return this.settlements
       if (!this.settlements$) {
         this.settlements$ = import('./generated/settlement').then((response) => {
-          this.settlements = response.settlement
-          Object.keys(response.settlement).forEach(iso => {
-            const parentIso = iso.slice(0, 7)
+          this.settlements = new Map<string, Settlement>()
+          Object.entries(response.settlement).forEach(([iso, data]) => {
+            this.settlements!.set(iso, new Settlement(iso, data[0], data[1], data[2]))
+            const parentIso = iso.slice(0, 9)
             if (!this.parentToChild.has(parentIso)) this.parentToChild.set(parentIso, [])
             this.parentToChild.get(parentIso)!.push(iso)
           })
-          return response.settlement
+          return this.settlements
         })
       }
 
@@ -173,28 +166,19 @@ export namespace UaLocation {
       (hromadaIso: string): Promise<Settlement[] | undefined>
     } = async (hromadaIso) => {
       await this.getAll()
-      const isos = this.parentToChild.get(hromadaIso.replace('UA', ''))
+      const isos = this.parentToChild.get(hromadaIso)
       const res = isos ? await Promise.all(isos.map(this.findByIso)).then(_ => _.filter(_ => !!_)) : undefined
       return res as Settlement[]
     }
 
     static readonly findByIso = async (iso: string): Promise<Settlement | undefined> => {
       await this.getAll()
-      const match: any = this.settlements![iso.replace('UA', '')]
-      if (match) return new Settlement(iso, match[0], match[1], match[2])
+      return this.settlements?.get(iso)
     }
 
     static readonly findByName = async (name: string): Promise<Settlement | undefined> => {
       await this.getAll()
-      const match = Object.entries(this.settlements!).find(([iso, data]) => data[0].includes(name))
-      if (match) {
-        const [iso, data] = match
-        return new Settlement(iso, data[0], data[1], data[2])
-      }
-    }
-
-    get iso() {
-      return 'UA' + this.shortIso
+      return Array.from(this.settlements?.values() ?? []).find(_ => _.en === name)
     }
 
     get _5w() {
@@ -202,8 +186,8 @@ export namespace UaLocation {
     }
 
     get hromada(): Hromada {
-      // 1202001002
-      const parentIso = this.shortIso.slice(0, 7)
+      // UA1202001002
+      const parentIso = this.iso.slice(0, 9)
       return Hromada.findByIso(parentIso as any)
     }
   }

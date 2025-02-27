@@ -9,7 +9,7 @@ describe('UaLocation', () => {
     expect(leaf.raion.oblast.iso).toEqual(root.iso)
   })
 
-  it.only('should traverse to settlement', async () => {
+  it('should traverse to settlement', async () => {
     const root = UaLocation.Oblast.findByName('Dnipropetrovska')
     const leaf = await root
       .raions[0]
@@ -24,7 +24,7 @@ describe('UaLocation', () => {
     expect(raion.ua).toEqual('Бахчисарайський')
     expect(raion.hromadas).not.toBeNull()
     expect(raion._5w).toEqual('Bakhchysaraiskyi_Бахчисарайський')
-    expect(raion.loc).toEqual('[ 44.65944872, 33.83442735 ]')
+    expect(raion.loc).toEqual([ 44.65944872, 33.83442735 ])
     expect(raion.oblast).not.toBeNull()
 
   })
@@ -35,8 +35,8 @@ describe('UaLocation', () => {
   })
 
   it('should find hromada by name', () => {
-    const match = UaLocation.Hromada.findByName('Dnipro')
-    expect(match?.iso).toEqual('UA1202')
+    const match = UaLocation.Hromada.findByName('Dniprovska')
+    expect(match?.iso).toEqual('UA1202001')
   })
 
   it('should find settlement by name', async () => {

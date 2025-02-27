@@ -72,21 +72,21 @@ export class UaLocationBuilder {
 
     const transformed = {
       oblast: seq(data.oblast).reduceObject(_ => [
-        _['Admin1 Pcode'].replace('UA', ''),
+        _['Admin1 Pcode'],//.replace('UA', ''),
         [_['Oblast'],
           _['Oblast UKR'],
           [_['LAT'], _['LON']],
         ],
       ]),
       raion: seq(data.raion).reduceObject(_ => [
-        _['Admin2 Pcode'].replace('UA', ''),
+        _['Admin2 Pcode'],//.replace('UA', ''),
         [_['Raion'],
           _['Raion UKR'],
           [_['LAT'], _['LON']],
         ],
       ]),
       hromada: seq(data.hromada).reduceObject(_ => [
-        _['Admin3 Pcode'].replace('UA', ''),
+        _['Admin3 Pcode'],//.replace('UA', ''),
         [_['Hromada'],
           _['Hromada UKR'],
           [_['LAT'], _['LON']],
@@ -94,7 +94,7 @@ export class UaLocationBuilder {
       ]),
       settlement: seq(data.settlement).reduceObject(_ => {
         return [
-          _['Admin4 Pcode'].replace('UA', ''),
+          _['Admin4 Pcode'],//.replace('UA', ''),
           [_['Settlement EN'],
             _['Settlement UKR'],
             (settlementGeoLoc as unknown as any)[_['Admin4 Pcode']],
@@ -112,7 +112,7 @@ export class UaLocationBuilder {
       fs.writeFileSync(`${this.args.outDir}/${level}.ts`, [
         level === 'oblast' ? `export type OblastName = ${data.oblast.map(_ => `'${_['Oblast']}'`).join('|')}` : undefined,
         hasType ? `export type ${capitalize(level)}Iso = ${(isosType as any)[level]}` : undefined,
-        `export const ${level}${hasType ? '' : ':Record<string, any>'} = ${JSON.stringify(transformed[level])}` + (hasType ? ' as const' : ''),
+        `export const ${level}${hasType ? '' : ':Record<string, any>'} = ${JSON.stringify(transformed[level]).replace(/"([^"]+)":/g, '$1:')}` + (hasType ? ' as const' : ''),
       ].filter(_ => !!_).join('\n'))
     })
   }
