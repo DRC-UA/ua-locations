@@ -4,18 +4,13 @@ import {UaLocation} from './UaLocation'
 describe('UaLocation', () => {
   it('should traverse to hromada', () => {
     const root = UaLocation.Oblast.findByName('Chernihivska')
-    const leaf = root
-      .raions.find(_ => _.en.includes('Chernihivsky'))
-      ?.hromadas.find(_ => _.en.includes('Cherni'))!
+    const leaf = root.raions.find(_ => _.en.includes('Chernihivsky'))?.hromadas.find(_ => _.en.includes('Cherni'))!
     expect(leaf.raion.oblast.iso).toEqual(root.iso)
   })
 
   it('should traverse to settlement', async () => {
     const root = UaLocation.Oblast.findByName('Dnipropetrovska')
-    const leaf = await root
-      .raions[0]
-      .hromadas[0]
-      .getSettlements().then(_ => _[0])
+    const leaf = await root.raions[0].hromadas[0].getSettlements().then(_ => _[0])
     expect(leaf.hromada.raion.oblast.iso).toEqual(root.iso)
   })
 
@@ -27,8 +22,8 @@ describe('UaLocation', () => {
     expect(raion._5w).toEqual('Bakhchysaraiskyi_Бахчисарайський')
     expect(raion.loc).toEqual([44.65944872, 33.83442735])
     expect(raion.oblast).not.toBeNull()
-
   })
+
   it('should get hromadas of a given oblast', () => {
     const hromadas = UaLocation.Oblast.findByIso('UA05').raions.flatMap(_ => _.hromadas)
     expect(hromadas.length > 10)

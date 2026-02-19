@@ -1,6 +1,8 @@
+import path from 'node:path'
+
 import {UaLocationBuilder} from './UaLocationBuilder'
 
 new UaLocationBuilder({
-  filePath: '/Users/pavloboiko/.code/ua-locations/assets/ukr_admin_boundaries_2026_02.xlsx',
-  outDir: '/Users/pavloboiko/.code/ua-locations/src/generated',
+  filePath: path.join(__dirname, '../assets', '/ukr_admin_boundaries_2026_02.xlsx'),
+  outDir: path.join(__dirname, './generated'),
 })

@@ -3,15 +3,13 @@ import {raion, RaionIso} from './generated/raion'
 import {hromada, HromadaIso} from './generated/hromada'
 
 export namespace UaLocation {
-
   export class Oblast {
     constructor(
       public iso: string,
       public en: string,
       public ua: string,
       public loc: [number, number],
-    ) {
-    }
+    ) {}
 
     static readonly data: Map<OblastIso, Oblast> = (() => {
       const res = new Map<OblastIso, Oblast>()
@@ -26,14 +24,14 @@ export namespace UaLocation {
     static readonly findByName: {
       (name: OblastName): Oblast
       (name: string): Oblast | undefined
-    } = (name) => {
+    } = name => {
       return Array.from(this.data.values()).find(_ => _.en === name) as any
     }
 
     static readonly findByIso: {
       (iso: OblastIso): Oblast
       (iso: string): Oblast | undefined
-    } = (iso) => {
+    } = iso => {
       return this.data.get(iso as OblastIso) as any
     }
 
@@ -50,14 +48,12 @@ export namespace UaLocation {
   }
 
   export class Raion {
-
     constructor(
       public iso: string,
       public en: string,
       public ua: string,
       public loc: [number, number],
-    ) {
-    }
+    ) {}
 
     static readonly data: Map<RaionIso, Raion> = (() => {
       const res = new Map<RaionIso, Raion>()
@@ -76,7 +72,7 @@ export namespace UaLocation {
     static readonly findByIso: {
       (iso: RaionIso): Raion
       (iso: string): Raion | undefined
-    } = (iso) => {
+    } = iso => {
       return this.data.get(iso as RaionIso) as any
     }
 
@@ -98,14 +94,12 @@ export namespace UaLocation {
   }
 
   export class Hromada {
-
     constructor(
       public iso: HromadaIso,
       public en: string,
       public ua: string,
       public loc: [number, number],
-    ) {
-    }
+    ) {}
 
     static readonly data: Map<HromadaIso, Hromada> = (() => {
       const res = new Map<HromadaIso, Hromada>()
@@ -124,7 +118,7 @@ export namespace UaLocation {
     static readonly findByIso: {
       (iso: HromadaIso): Hromada
       (iso: string): Hromada | undefined
-    } = (iso) => {
+    } = iso => {
       return this.data.get(iso as HromadaIso) as any
     }
 
@@ -144,21 +138,13 @@ export namespace UaLocation {
     }
   }
 
-  type SettlementData = {
-    en: string,
-    ua: string,
-    loc: [number, number],
-  }
-
   export class Settlement {
-
     constructor(
       public iso: string,
       public en: string,
       public ua: string,
       public loc: [number, number],
-    ) {
-    }
+    ) {}
 
     private static settlements?: Map<string, Settlement>
     private static settlements$?: Promise<Map<string, Settlement>>
@@ -167,7 +153,7 @@ export namespace UaLocation {
     static readonly getAll = async () => {
       if (this.settlements) return this.settlements
       if (!this.settlements$) {
-        this.settlements$ = import('./generated/settlement').then((response) => {
+        this.settlements$ = import('./generated/settlement').then(response => {
           this.settlements = new Map<string, Settlement>()
           Object.entries(response.settlement).forEach(([iso, data]) => {
             this.settlements!.set(iso, new Settlement(iso, data[0], data[1], data[2]))
@@ -185,7 +171,7 @@ export namespace UaLocation {
     static readonly findByHromadaIso: {
       (hromadaIso: HromadaIso): Promise<Settlement[]>
       (hromadaIso: string): Promise<Settlement[] | undefined>
-    } = async (hromadaIso) => {
+    } = async hromadaIso => {
       await this.getAll()
       const isos = this.parentToChild.get(hromadaIso)
       const res = isos ? await Promise.all(isos.map(this.findByIso)).then(_ => _.filter(_ => !!_)) : undefined
@@ -212,5 +198,4 @@ export namespace UaLocation {
       return Hromada.findByIso(parentIso as any)
     }
   }
-
 }
