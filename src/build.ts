@@ -1,6 +1,6 @@
 import {UaLocationBuilder} from './UaLocationBuilder'
 
 new UaLocationBuilder({
-  filePath: '/Users/alex/Documents/Workspaces/ua-locations/assets/Reference_Data_20240214_122012_UTC_02_00.xlsx',
-  outDir: '/Users/alex/Documents/Workspaces/ua-locations/src/generated',
+  filePath: '/Users/pavloboiko/.code/ua-locations/assets/ukr_admin_boundaries_2026_02.xlsx',
+  outDir: '/Users/pavloboiko/.code/ua-locations/src/generated',
 })
