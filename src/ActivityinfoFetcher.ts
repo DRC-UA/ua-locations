@@ -136,8 +136,6 @@ class ActivityinfoFetcher {
       columns: oblastColumnsRequest,
     })
 
-    console.log(oblastOptions)
-
     const raionOptions = await this.getOptions({
       formId: raionSchema!.id,
       label: raionSchema!.label,
@@ -163,12 +161,8 @@ class ActivityinfoFetcher {
       settlement: optionsToDictionary(settlementOptions),
     }
 
-    this.spinner.start('Preparing prettier formatter')
-
     const prettierConfigPath = await prettier.resolveConfigFile()
     const prettierOptions = await prettier.resolveConfig(prettierConfigPath!)
-
-    this.spinner.succeed('Preparing prettier formatter')
 
     Object.entries(adminLevelDictionary).map(async ([adminLevel, dict]) => {
       try {
