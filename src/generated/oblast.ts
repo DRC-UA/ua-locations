@@ -1,3 +1,85 @@
-export type OblastName = 'Autonomous Republic of Crimea'|'Vinnytska'|'Volynska'|'Dnipropetrovska'|'Donetska'|'Zhytomyrska'|'Zakarpatska'|'Zaporizka'|'Ivano-Frankivska'|'Kyivska'|'Kirovohradska'|'Luhanska'|'Lvivska'|'Mykolaivska'|'Odeska'|'Poltavska'|'Rivnenska'|'Sumska'|'Ternopilska'|'Kharkivska'|'Khersonska'|'Khmelnytska'|'Cherkaska'|'Chernivetska'|'Chernihivska'|'Kyiv'|'Sevastopol'
-export type OblastIso = 'UA01'|'UA05'|'UA07'|'UA12'|'UA14'|'UA18'|'UA21'|'UA23'|'UA26'|'UA32'|'UA35'|'UA44'|'UA46'|'UA48'|'UA51'|'UA53'|'UA56'|'UA59'|'UA61'|'UA63'|'UA65'|'UA68'|'UA71'|'UA73'|'UA74'|'UA80'|'UA85'
-export const oblast:Record<OblastIso, [string,string,[number,number]]> = {UA01:["Autonomous Republic of Crimea","Автономна Республіка Крим",[45.32414852,34.20233686]],UA05:["Vinnytska","Вінницька",[48.9204127,28.68555719]],UA07:["Volynska","Волинська",[51.190829,24.87041449]],UA12:["Dnipropetrovska","Дніпропетровська",[48.43617636,34.89193951]],UA14:["Donetska","Донецька",[48.04731497,37.6741199]],UA18:["Zhytomyrska","Житомирська",[50.59012472,28.43675347]],UA21:["Zakarpatska","Закарпатська",[48.4036198,23.27591388]],UA23:["Zaporizka","Запорізька",[47.26702343,35.69997842]],UA26:["Ivano-Frankivska","Івано-Франківська",[48.7016072,24.61950868]],UA32:["Kyivska","Київська",[49.85727282,30.42452952]],UA35:["Kirovohradska","Кіровоградська",[48.47227671,32.08175027]],UA44:["Luhanska","Луганська",[48.9855183,39.01773069]],UA46:["Lvivska","Львівська",[49.71732478,23.91660596]],UA48:["Mykolaivska","Миколаївська",[47.28764673,32.03710564]],UA51:["Odeska","Одеська",[46.96261185,30.47449351]],UA53:["Poltavska","Полтавська",[49.73233922,33.77861246]],UA56:["Rivnenska","Рівненська",[50.94185668,26.6083199]],UA59:["Sumska","Сумська",[50.89882272,34.19781807]],UA61:["Ternopilska","Тернопільська",[49.37271879,25.57622626]],UA63:["Kharkivska","Харківська",[49.61499032,36.50491022]],UA65:["Khersonska","Херсонська",[46.66875631,33.62370201]],UA68:["Khmelnytska","Хмельницька",[49.50734557,26.9296266]],UA71:["Cherkaska","Черкаська",[49.17540992,31.35919969]],UA73:["Chernivetska","Чернівецька",[48.26819792,25.97702081]],UA74:["Chernihivska","Чернігівська",[51.31740553,31.91250472]],UA80:["Kyiv","Київ",[50.44924332,30.54670588]],UA85:["Sevastopol","Севастополь",[44.59101958,33.50765834]]} as const
+export type OblastName =
+  | 'Autonomous Republic of Crimea'
+  | 'Vinnytska'
+  | 'Volynska'
+  | 'Dnipropetrovska'
+  | 'Donetska'
+  | 'Zhytomyrska'
+  | 'Zakarpatska'
+  | 'Zaporizka'
+  | 'Ivano-Frankivska'
+  | 'Kyivska'
+  | 'Kirovohradska'
+  | 'Luhanska'
+  | 'Lvivska'
+  | 'Mykolaivska'
+  | 'Odeska'
+  | 'Poltavska'
+  | 'Rivnenska'
+  | 'Sumska'
+  | 'Ternopilska'
+  | 'Kharkivska'
+  | 'Khersonska'
+  | 'Khmelnytska'
+  | 'Cherkaska'
+  | 'Chernivetska'
+  | 'Chernihivska'
+  | 'Kyiv'
+  | 'Sevastopol'
+export type OblastIso =
+  | 'UA01'
+  | 'UA05'
+  | 'UA07'
+  | 'UA12'
+  | 'UA14'
+  | 'UA18'
+  | 'UA21'
+  | 'UA23'
+  | 'UA26'
+  | 'UA32'
+  | 'UA35'
+  | 'UA44'
+  | 'UA46'
+  | 'UA48'
+  | 'UA51'
+  | 'UA53'
+  | 'UA56'
+  | 'UA59'
+  | 'UA61'
+  | 'UA63'
+  | 'UA65'
+  | 'UA68'
+  | 'UA71'
+  | 'UA73'
+  | 'UA74'
+  | 'UA80'
+  | 'UA85'
+export const oblast: Record<OblastIso, [string, string, [number, number]]> = {
+  UA01: ['Autonomous Republic of Crimea', 'Автономна Республіка Крим', [45.32414852, 34.20233686]],
+  UA05: ['Vinnytska', 'Вінницька', [48.9204127, 28.68555719]],
+  UA07: ['Volynska', 'Волинська', [51.190829, 24.87041449]],
+  UA12: ['Dnipropetrovska', 'Дніпропетровська', [48.43617636, 34.89193951]],
+  UA14: ['Donetska', 'Донецька', [48.04731497, 37.6741199]],
+  UA18: ['Zhytomyrska', 'Житомирська', [50.59012472, 28.43675347]],
+  UA21: ['Zakarpatska', 'Закарпатська', [48.4036198, 23.27591388]],
+  UA23: ['Zaporizka', 'Запорізька', [47.26702343, 35.69997842]],
+  UA26: ['Ivano-Frankivska', 'Івано-Франківська', [48.7016072, 24.61950868]],
+  UA32: ['Kyivska', 'Київська', [49.85727282, 30.42452952]],
+  UA35: ['Kirovohradska', 'Кіровоградська', [48.47227671, 32.08175027]],
+  UA44: ['Luhanska', 'Луганська', [48.9855183, 39.01773069]],
+  UA46: ['Lvivska', 'Львівська', [49.71732478, 23.91660596]],
+  UA48: ['Mykolaivska', 'Миколаївська', [47.28764673, 32.03710564]],
+  UA51: ['Odeska', 'Одеська', [46.96261185, 30.47449351]],
+  UA53: ['Poltavska', 'Полтавська', [49.73233922, 33.77861246]],
+  UA56: ['Rivnenska', 'Рівненська', [50.94185668, 26.6083199]],
+  UA59: ['Sumska', 'Сумська', [50.89882272, 34.19781807]],
+  UA61: ['Ternopilska', 'Тернопільська', [49.37271879, 25.57622626]],
+  UA63: ['Kharkivska', 'Харківська', [49.61499032, 36.50491022]],
+  UA65: ['Khersonska', 'Херсонська', [46.66875631, 33.62370201]],
+  UA68: ['Khmelnytska', 'Хмельницька', [49.50734557, 26.9296266]],
+  UA71: ['Cherkaska', 'Черкаська', [49.17540992, 31.35919969]],
+  UA73: ['Chernivetska', 'Чернівецька', [48.26819792, 25.97702081]],
+  UA74: ['Chernihivska', 'Чернігівська', [51.31740553, 31.91250472]],
+  UA80: ['Kyiv', 'Київ', [50.44924332, 30.54670588]],
+  UA85: ['Sevastopol', 'Севастополь', [44.59101958, 33.50765834]],
+} as const

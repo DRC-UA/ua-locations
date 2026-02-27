@@ -1,9 +1,10 @@
 import * as XLSX from 'xlsx'
-import settlementGeoLoc from '../assets/settlement-geoloc.json'
 import fs from 'node:fs'
 import {Obj, seq} from '@axanc/ts-utils'
 
-const capitalize = (_: string) => _.charAt(0).toUpperCase() + _.slice(1)
+import settlementGeoLoc from '../assets/settlement-geoloc.json'
+
+import {capitalize} from './utils'
 
 namespace Row {
   export type Oblast = {

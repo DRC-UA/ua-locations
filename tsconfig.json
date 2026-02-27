@@ -4,6 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "outDir": "dist",
+    "baseUrl": "src",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
@@ -13,14 +14,11 @@
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "~/*": ["*"],
+    },
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "src/tmp",
-    "node_modules",
-    "dist"
-  ]
+  "include": ["src"],
+  "exclude": ["src/tmp", "node_modules", "dist"],
 }
