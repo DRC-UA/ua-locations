@@ -11,8 +11,8 @@
     "release-minor": "./release.sh minor",
     "release-major": "./release.sh major",
     "build": "tsup",
-    "build-index": "tsx src/build.ts",
-    "fetch-locations": "tsx src/fetch-locations.ts",
+    "generate-from-xls": "tsx src/generateFromXls.ts",
+    "generate-from-api": "tsx src/generateFromApi.ts",
     "dev": "tsx src/index.ts",
     "test": "node --experimental-vm-modules node_modules/.bin/jest"
   },
